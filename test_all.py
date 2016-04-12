@@ -34,18 +34,17 @@
 ########################################################################
 
 import random
-
-import Problem
-import nose
 import numpy as np
-from DE import DE
-from MetaOptimize import MetaOptimize
-from Optimize import MultiRun
-from PS import PS
-from PSO import PSO, MOL
-from Timer import Timer
+import nose
 from nose.tools import assert_equals, assert_is_instance
 
+import swarmops.Problem as Problem
+from swarmops.DE import DE
+from swarmops.MetaOptimize import MetaOptimize
+from swarmops.Optimize import MultiRun
+from swarmops.PS import PS
+from swarmops.PSO import PSO, MOL
+from swarmops.Timer import Timer
 from swarmops.LUS import LUS
 
 

@@ -12,8 +12,7 @@
 ########################################################################
 
 import numpy as np
-from FitnessTrace import FitnessTrace
-
+from swarmops.FitnessTrace import FitnessTrace
 from swarmops import tools
 
 

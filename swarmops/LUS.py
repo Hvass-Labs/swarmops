@@ -23,8 +23,7 @@
 #
 ########################################################################
 
-from Optimize import SingleRun
-
+from swarmops.Optimize import SingleRun
 from swarmops import tools
 
 

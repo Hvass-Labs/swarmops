@@ -10,14 +10,13 @@
 # Demonstration of optimizing benchmark problems.
 ########################################################################
 
-import Problem
-from DE import DE
-from Optimize import MultiRun
-from PS import PS
-from PSO import PSO, MOL
-from Timer import Timer
-
+import swarmops.Problem as Problem
+from swarmops.Optimize import MultiRun
+from swarmops.PSO import PSO, MOL
+from swarmops.DE import DE
+from swarmops.PS import PS
 from swarmops.LUS import LUS
+from swarmops.Timer import Timer
 
 ########################################################################
 

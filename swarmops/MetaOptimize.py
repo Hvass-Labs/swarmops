@@ -31,11 +31,10 @@
 ########################################################################
 
 import numpy as np
-from LogSolutions import LogSolutions
-from Optimize import MultiRun
-from Problem import Problem
-from Timer import Timer
-
+from swarmops.LogSolutions import LogSolutions
+from swarmops.Optimize import MultiRun
+from swarmops.Problem import Problem
+from swarmops.Timer import Timer
 from swarmops.LUS import LUS
 
 

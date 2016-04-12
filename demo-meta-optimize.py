@@ -24,10 +24,9 @@
 #
 ########################################################################
 
-from MetaOptimize import MetaOptimize
-from PSO import MOL
-from Problem import *
-
+from swarmops.MetaOptimize import MetaOptimize
+from swarmops.PSO import MOL
+from swarmops.Problem import *
 from swarmops.Timer import Timer
 
 if __name__ == "__main__":
