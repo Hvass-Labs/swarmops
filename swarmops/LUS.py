@@ -7,73 +7,90 @@
 ########################################################################
 
 ########################################################################
-# Pattern Search (PS). An early variant was originally
-# due to Fermi and Metropolis at the Los Alamos nuclear
-# laboratory as described by Davidon [1]. It is also
-# sometimes called compass search. This is a slightly
-# different variant by Pedersen [2]. It works especially
-# well when only few optimization iterations are allowed.
+# Local Unimodal Sampling (LUS).
+#
+# Performs localized sampling of the search-space with a sampling range
+# that initially covers the entire search-space and is decreased
+# exponentially as optimization progresses. LUS works especially well
+# for optimization problems where only short runs can be performed
+# and the search-space is fairly smooth.
 #
 # References:
 #
-# [1] W.C. Davidon. Variable metric method for minimization.
-#     SIAM Journal on Optimization, 1(1):1-17, 1991
-#
-# [2] M.E.H. Pedersen. Tuning & Simplifying Heuristical Optimization (PhD thesis).
+# [1] M.E.H. Pedersen. Tuning & Simplifying Heuristical Optimization (PhD thesis).
 #     University of Southampton, School of Engineering Sciences. 2010
 #     http://www.hvass-labs.org/people/magnus/thesis/pedersen08thesis.pdf
 #
 ########################################################################
 
-import tools
 from Optimize import SingleRun
+
+from swarmops import tools
 
 
 ########################################################################
 
-class PS(SingleRun):
+class LUS(SingleRun):
     """
-        Perform a single optimization run using Pattern Search (PS).
+        Perform a single optimization run using Local Unimodal Sampling (LUS).
 
         In practice, you would typically perform multiple optimization runs using
-        the MultiRun-class. The reason is that PS is a heuristic optimizer so
+        the MultiRun-class. The reason is that LUS is a heuristic optimizer so
         there is no guarantee that an acceptable solution is found in any single
         run. It is more likely that an acceptable solution is found if you perform
         multiple optimization runs.
     """
 
     # Name of this optimizer.
-    name = "PS"
-    name_full = "Pattern Search"
+    name = "LUS"
+    name_full = "Local Unimodal Sampling"
+
+    # Number of control parameters for LUS. Used by MetaFitness-class.
+    num_parameters = 1
+
+    # Lower boundaries for the control parameters of LUS. Used by MetaFitness-class.
+    parameters_lower_bound = [0.1]
+
+    # Upper boundaries for the control parameters of LUS. Used by MetaFitness-class.
+    parameters_upper_bound = [100.0]
 
     @staticmethod
     def parameters_dict(parameters):
         """
-        Create and return a dict from a list of PS parameters.
-        The dict is empty because PS does not have any control parameters.
-        This is implemented to have a consistent API.
+        Create and return a dict from a list of LUS parameters.
+        This is useful for printing the named parameters.
+
+        :param parameters: List with LUS parameters assumed to be in the correct order.
+        :return: Dict with LUS parameters.
         """
 
-        return {}
+        return {'gamma': parameters[0]}
 
     @staticmethod
-    def parameters_list():
+    def parameters_list(gamma):
         """
-        Create an empty list because PS does not have any parameters.
-        This is implemented to have a consistent API.
+        Create a list with LUS parameters in the correct order.
+
+        :param gamma: Gamma-parameter (see paper reference for explanation).
+        :return: List with LUS parameters.
         """
 
-        return []
+        return [gamma]
 
-    def __init__(self, problem, parameters=None, parallel=False, *args, **kwargs):
+    # Default parameters for LUS which will be used if no other parameters are specified.
+    parameters_default = [3.0]
+
+    def __init__(self, problem, parameters=parameters_default, parallel=False, *args, **kwargs):
         """
-        Create object instance and perform a single optimization run using PS.
+        Create object instance and perform a single optimization run using LUS.
 
-        :param problem: The problem to be optimized. Instance of Problem-class.
+        :param problem:
+            The problem to be optimized. Instance of Problem-class.
 
-        :param parameters: None. There are no control parameters for PS.
+        :param parameters:
+            Control parameters for LUS.
 
-        :param parallel: False. PS cannot run in parallel except through MultiRun.
+        :param parallel: False. LUS cannot run in parallel except through MultiRun.
 
         :return:
             Object instance. Get the optimization results from the object's variables.
@@ -84,6 +101,12 @@ class PS(SingleRun):
 
         # Copy arguments to instance variables.
         self.problem = problem
+
+        # Unpack control parameters.
+        gamma = parameters[0]
+
+        # Derived control parameter.
+        self.decrease_factor = 0.5 ** (1.0 / (gamma * problem.dim))
 
         # Initialize parent-class which also starts the optimization run.
         SingleRun.__init__(self, *args, **kwargs)
@@ -103,11 +126,11 @@ class PS(SingleRun):
         lower_bound = self.problem.lower_bound
         upper_bound = self.problem.upper_bound
 
-        # Dimensionality of search-space.
-        dim = self.problem.dim
-
         # Initialize the range-vector to full search-space.
         d = upper_bound - lower_bound
+
+        # Search-space dimensionality.
+        dim = self.problem.dim
 
         # Initialize x with random position in search-space.
         x = tools.rand_array(lower=lower_init, upper=upper_init)
@@ -124,37 +147,25 @@ class PS(SingleRun):
         # Count starts at one because we have already calculated fitness once above.
         evaluations = 1
         while evaluations < self.max_evaluations:
-            # Pick random index from {0, .., dim-1}
-            idx = tools.rand_int(lower=0, upper=dim)
-
-            # Save old element.
-            t = x[idx]
-
-            # Make new element.
-            x[idx] = x[idx] + d[idx]
-
-            # Bound new element to search-space.
-            x[idx] = tools.bound_scalar(x=x[idx],
-                                        lower=lower_bound[idx],
-                                        upper=upper_bound[idx])
+            # Sample new position y from the bounded surroundings
+            # of the current position x.
+            y = tools.sample_bounded(x=x, d=d, lower=lower_bound, upper=upper_bound)
 
             # Compute new fitness.
-            new_fitness = f(x, limit=fitness)
+            new_fitness = f(y, limit=fitness)
 
             # If improvement to fitness.
             if new_fitness < fitness:
-                # Update just the fitness as the position is already updated.
+                # Update fitness and position.
                 fitness = new_fitness
+                x = y
 
                 # Update the best-known fitness and position.
                 # The parent-class is used for this.
                 self._update_best(fitness=fitness, x=x)
             else:
-                # Otherwise restore the position.
-                x[idx] = t
-
-                # Reduce search-range and invert direction for this dimension.
-                d[idx] *= -0.5
+                # Otherwise decrease the search-range.
+                d *= self.decrease_factor
 
             # Call parent-class to print status etc. during optimization.
             self._iteration(evaluations)

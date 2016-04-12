@@ -12,8 +12,9 @@
 ########################################################################
 
 import numpy as np
-import tools
 from FitnessTrace import FitnessTrace
+
+from swarmops import tools
 
 
 ##################################################
