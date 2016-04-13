@@ -42,20 +42,8 @@ To install swarmops using pip, type the following in the Linux terminal:
 
     pip install git+https://github.com/Hvass-Labs/swarmops.git
 
-This installs swarmops in the current Python environment.
-
-### virtualenv
-
-You may want to install swarmops in a virtual environment so it does
-not interfere with other parts of your Python installation. Type
-the following in a Linux terminal:
-
-    virtualenv ~/dev/swarmops-env/
-    cd ~/dev/swarmops-env/
-    pip install git+https://github.com/Hvass-Labs/swarmops.git
-
-Now you can import swarmops in Python files from inside the directory
-~/dev/swarmops-env/
+This installs swarmops in the current Python environment. See below for
+installing in a virtual environment.
 
 ### Github
 
@@ -100,12 +88,18 @@ The line can be added to ~/.bashrc so it works permanently.
 If you want to use a virtual environment, you write the following
 in a Linux terminal:
 
-    virtualenv ~/dev/my-project/
+    mkdir ~/dev/my-project/
     cd ~/dev/my-project/
+    virtualenv swarmops-env
+    source activate swarmops-env/
     pip install git+https://github.com/Hvass-Labs/swarmops.git
 
 This allows you to use swarmops from Python source-code inside
 the directory ~/dev/my-project/
+
+When you are done working on the project you can deactivate the virtualenv:
+
+    source deactivate swarmops-env
 
 ### Importing
 
