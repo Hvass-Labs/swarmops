@@ -158,7 +158,8 @@ Meta-Optimization Demo
 ----------------------
 
 Meta-optimization is the tuning of an optimizer's control / behavioural
-parameters by using another overlaying optimizer. SwarmOps supports this
+parameters by using another overlaying optimizer. This may greatly
+improve optimization performance. SwarmOps supports meta-optimization
 and a short demo is found in the file demo-meta-optimize.py
 
 To execute the file, type the following in a Linux terminal in the directory
@@ -170,13 +171,16 @@ Requirements
 ------------
 
 SwarmOps requires NumPy. Additionally, if you want to use L-BFGS-B to refine
-the best-found solution, then you also need SciPy. SwarmOps was developed
-using [Anaconda 3.X](https://www.continuum.io/downloads) but it should also
-work with other Python installations as long as you have NumPy installed,
-and SciPy if you want to use the L-BFGS-B optimizer.
+the best-found solution, then you also need SciPy. And if you want to plot
+the fitness-trace, then you also need matplotlib.
+
+SwarmOps was developed using
+[Anaconda 3.X](https://www.continuum.io/downloads) but it should also
+work with other Python installations as long as you have at least NumPy
+installed, and SciPy and matplotlib if you require them.
 
 However, the parallel execution apparently does not work with Python 2.7,
-so you must use Python 3.X if you want to use swarmop's parallel execution.
+so you must use Python 3.X if you want to use parallel execution in SwarmOps.
 
 Unit Tests
 ----------
@@ -186,7 +190,7 @@ with thousands of different configurations. The purpose is to test whether
 exceptions are raised somewhere and if the output is of the expected data-type.
 The optimization results are not tested for correctness because these
 optimizers are stochastic in nature and will always give different results.
-This is discussed in more detail in test_all.py and means that you should
+This is discussed in more detail in the test_all.py file. This means you should
 also manually inspect the output of demo-optimize.py and demo-meta-optimize.py
 so as to assess whether the optimization results are satisfactory.
 
@@ -195,16 +199,16 @@ Parallel Execution
 
 SwarmOps supports parallel execution in 3 ways depending on your needs:
 
-1.  MultiRun can execute several optimization runs in parallel. This is usually the
-    best way because the overhead of the parallel execution is very low so there is
-    a near-linear speed-up depending on the number of CPU cores. However, if you
-    only want to perform a single optimization run then you cannot use this way
-    of making the execution parallel.
+1.  The MultiRun-class can execute several optimization runs in parallel. This is
+    usually the best way because the overhead of the parallel execution is very
+    low so there is a near-linear speed-up depending on the number of CPU cores.
+    However, if you only want to perform a single optimization run then you cannot
+    use this way of making the execution parallel.
 
 2.  The optimizers PSO, MOL and DE can execute in parallel. This is done by
-    running the fitness evaluations in parallel for the optimizer's population
-    of candidate solutions. However, the overhead is significant, especially on
-    Windows, so this way of doing parallel execution should only be used if
+    running the fitness evaluations in parallel for each iteration of the optimizer.
+    However, the overhead is significant, especially on Windows, so this way of
+    doing parallel execution should only be used if
     (A) you only want to perform a single optimization run, and
     (B) your fitness function is slow to compute.
 
