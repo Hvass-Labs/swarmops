@@ -11,7 +11,6 @@ setup(
     author='Magnus Erik Hvass Pedersen',
     author_email='magnus(at)hvass-labs(dot)org',
     url='https://github.com/Hvass-Labs/swarmops',
-    #download_url='https://github.com/sorend/fylearn/tarball/%s' % (MY_VERSION,),
     download_url='git+https://github.com/Hvass-Labs/swarmops.git',
     license='BSD',
     keywords=['heuristic optimization', 'particle swarm optimization',

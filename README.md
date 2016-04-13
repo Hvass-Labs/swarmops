@@ -1,4 +1,4 @@
-SwarmOps - Heuristic optimization for Python.
+SwarmOps - Heuristic Optimization for Python.
 =============================================
 
 SwarmOps for Python implements the following heuristic optimizers which do not
@@ -6,7 +6,7 @@ use the gradient of the problem being optimized:
 
 * Particle Swarm Optimization (PSO)
 * Differential Evolution (DE)
-* Many Optimizing Liaisons (MOL) - A simple variant of PSO.
+* Many Optimizing Liaisons (MOL) - A simple variant of PSO
 * Pattern Search (PS)
 * Local Unimodal Sampling (LUS)
 
@@ -65,7 +65,7 @@ To install directly from Github type the following in a Linux terminal:
 
 This creates a directory named swarmops which contains all the source-code.
 
-Import in Your Project
+Importing in Your Project
 ----------------------
 
 There are different ways of importing and using swarmops in your own project.
