@@ -25,6 +25,9 @@ and refining the best-found solution using the
 
 Parallel execution is also supported in different ways, see below.
 
+Meta-optimization is also supported, where the control / behavioural parameters
+of an optimizer may be tuned by using an overlaying meta-optimizer, see below.
+
 Installation
 ------------
 
@@ -70,7 +73,7 @@ a symbolic link by typing the following in a Linux terminal:
 
 This creates ~/dev/my-project/swarmops/ which really points
 to the directory ~/dev/swarmops/swarmops/ and allows you to
-import swarmops from Python source-code files inside ~/dev/my-project/ 
+import swarmops from Python files inside ~/dev/my-project/ 
 
 ### Environment Path
 
@@ -94,12 +97,12 @@ in a Linux terminal:
     source activate swarmops-env/
     pip install git+https://github.com/Hvass-Labs/swarmops.git
 
-This allows you to use swarmops from Python source-code inside
+This allows you to use swarmops from Python files inside
 the directory ~/dev/my-project/
 
 When you are done working on the project you can deactivate the virtualenv:
 
-    source deactivate swarmops-env
+    source deactivate
 
 Note that this will also install and build the dependencies
 NumPy, SciPy and matplotlib. This may be very slow and may
@@ -185,7 +188,7 @@ where you installed swarmops:
 Unit Tests
 ----------
 
-Unit-tests / nose-tests are found in test_all.py which test the optimizers
+Unit-tests / nose-tests are found in the file test_all.py which test the optimizers
 with thousands of different configurations. The purpose is to test whether
 exceptions are raised somewhere and if the output is of the expected data-type.
 The optimization results are not tested for correctness because these
