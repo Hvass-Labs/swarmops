@@ -142,6 +142,21 @@ different because they are random):
     [ 1.00000295  1.00000462  1.00000635]
     1.02338996528e-09
 
+Requirements
+------------
+
+SwarmOps requires NumPy. Additionally, if you want to use L-BFGS-B to refine
+the best-found solution, then you also need SciPy. And if you want to plot
+the fitness-trace, then you also need matplotlib.
+
+SwarmOps was developed using
+[Anaconda 3.X](https://www.continuum.io/downloads) but it should also
+work with other Python installations as long as you have at least NumPy
+installed, and SciPy and matplotlib if you require them.
+
+However, the parallel execution apparently does not work with Python 2.7,
+so you must use Python 3.X if you want to use parallel execution in SwarmOps.
+
 Optimization Demo
 -----------------
 
@@ -166,21 +181,6 @@ To execute the file, type the following in a Linux terminal in the directory
 where you installed swarmops:
 
     python demo-meta-optimize.py
-
-Requirements
-------------
-
-SwarmOps requires NumPy. Additionally, if you want to use L-BFGS-B to refine
-the best-found solution, then you also need SciPy. And if you want to plot
-the fitness-trace, then you also need matplotlib.
-
-SwarmOps was developed using
-[Anaconda 3.X](https://www.continuum.io/downloads) but it should also
-work with other Python installations as long as you have at least NumPy
-installed, and SciPy and matplotlib if you require them.
-
-However, the parallel execution apparently does not work with Python 2.7,
-so you must use Python 3.X if you want to use parallel execution in SwarmOps.
 
 Unit Tests
 ----------
