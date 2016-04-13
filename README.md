@@ -101,6 +101,12 @@ When you are done working on the project you can deactivate the virtualenv:
 
     source deactivate swarmops-env
 
+Note that this will also install and build the dependencies
+NumPy, SciPy and matplotlib. This may be very slow and may
+also require you to install other libraries first. This
+installation procedure may require some experience and
+beginners may wish to use one of the simpler installations above.
+
 ### Importing
 
 Whichever of the above methods you used, you can now import swarmops
