@@ -185,6 +185,22 @@ where you installed swarmops:
 
     python demo-meta-optimize.py
 
+Problems
+--------
+
+SwarmOps works for real-valued optimization problems, that is, problems that
+take as input some array x of floating point values and returns a single
+floating point value for the fitness associated with x. The goal is to find
+the array x that has the lowest fitness value.
+
+The array x is sometimes called a candidate solution, or a position in the
+search-space. The fitness function is sometimes called a cost or error function.
+
+You can implement your own optimization problem in two ways. Either you sub-class
+the Problem-class and override the fitness() function in that class, or you pass
+your fitness-function to the init-method of the Problem-class. This is described
+in more detail in the file Problem.py and an example is given in demo-optimize.py
+
 Unit Tests
 ----------
 
