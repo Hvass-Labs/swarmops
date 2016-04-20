@@ -33,9 +33,22 @@ class Problem:
 
     def __init__(self, name, dim, fitness_min,
                  lower_bound, upper_bound,
-                 lower_init=None, upper_init=None):
+                 lower_init=None, upper_init=None,
+                 func=None):
         """
         Create the object instance for an optimization problem.
+
+        You can implement a fitness function in either of two ways:
+
+        1) You can sub-class this Problem-class and override the self.fitness() function.
+           This is demonstrated in the benchmark problems below.
+
+        2) You can pass the fitness function as the func-argument to __init__.
+           The arguments of the fitness function must match those of self.fitness().
+           Note that if you want to do parallel execution then the fitness function
+           must not be declared inside "if __name__ == '__main__':" due to some
+           peculiarities in how multiprocessing uses pickle.
+           This is demonstrated in demo-optimize.py
 
         :param name: Name of the optimization problem.
         :param dim: Dimensionality of the search-space.
@@ -44,6 +57,7 @@ class Problem:
         :param upper_bound: Upper boundary for the search-space.
         :param lower_init: Lower initialization boundary (if None then user lower_bound).
         :param upper_init: Upper initialization boundary (if None then user upper_bound).
+        :param func: Wrap a fitness-function whose arguments must match self.fitness().
         """
 
         # Copy arguments to instance variables.
@@ -51,6 +65,11 @@ class Problem:
         self.name_full = "{0} ({1} dim)".format(name, dim)
         self.dim = dim
         self.fitness_min = fitness_min
+
+        # If a fitness function is supplied as argument,
+        # then use it instead of the class method.
+        if func is not None:
+            self.fitness = func
 
         # Boundaries for the search-space. Ensure they are numpy float arrays.
         self.lower_bound = np.array(lower_bound, dtype='float64')
@@ -89,6 +108,7 @@ class Problem:
         :param limit:
             Calculation of the fitness can be aborted if the value is greater than this limit.
             This is used for so-called Pre-Emptive Fitness Evaluation in the MetaFitness-class.
+            You can ignore this value.
 
         :return:
             Fitness-value of x.
@@ -145,7 +165,6 @@ class Sphere(Benchmark):
 
     def fitness(self, x, limit=np.Infinity):
         return np.sum(x ** 2)
-
 
 class Rosenbrock(Benchmark):
     """

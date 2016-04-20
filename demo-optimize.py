@@ -10,6 +10,7 @@
 # Demonstration of optimizing benchmark problems.
 ########################################################################
 
+import numpy as np
 import swarmops.Problem as Problem
 from swarmops.Optimize import MultiRun
 from swarmops.PSO import PSO, MOL
@@ -17,6 +18,16 @@ from swarmops.DE import DE
 from swarmops.PS import PS
 from swarmops.LUS import LUS
 from swarmops.Timer import Timer
+
+
+########################################################################
+
+# Fitness function used as example how to wrap a function in a Problem-object.
+# Note that it is defined outside the "if __name__ == '__main__'" statement,
+# in order for it to work with parallel execution.
+def sphere_func(x, limit=np.Infinity):
+    return np.sum(x*x)
+
 
 ########################################################################
 
@@ -52,6 +63,13 @@ if __name__ == "__main__":
     #problem = Problem.QuarticNoise(dim=dim)
     #problem = Problem.Penalized1(dim=dim)
     #problem = Problem.Penalized2(dim=dim)
+
+    # Example of how to wrap a function in a problem-object.
+    if False:
+        problem = Problem.Benchmark(name="Sphere Wrap Func", dim=dim, fitness_min=0.0,
+                                    lower_bound=-100.0, upper_bound=100.0,
+                                    lower_init=50.0, upper_init=100.0,
+                                    func=sphere_func)
 
     if True:
         # Use PSO as optimizer.
