@@ -11,7 +11,6 @@ setup(
     author='Magnus Erik Hvass Pedersen',
     author_email='my-first-name@hvass-labs.org',
     url='https://github.com/Hvass-Labs/swarmops',
-#    download_url='git+https://github.com/Hvass-Labs/swarmops.git',
     license='BSD',
     keywords=['heuristic optimization', 'particle swarm optimization',
               'differential evolution', 'meta-optimization'],
