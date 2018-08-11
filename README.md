@@ -31,91 +31,34 @@ of an optimizer may be tuned by using an overlaying meta-optimizer, see below.
 Installation
 ------------
 
-SwarmOps for Python can be installed in different ways.
-
-### Zip-file
-
-To install the source-code manually, download the
-[Zip-file](https://github.com/Hvass-Labs/swarmops/archive/master.zip)
-and unpack it into a directory of your choice.
-
-### pip
-
-To install swarmops using pip, type the following in the Linux terminal:
-
-    pip install git+https://github.com/Hvass-Labs/swarmops.git
-
-This installs swarmops in the current Python environment. See below for
-installing in a virtual environment.
-
-### Github
-
-To install directly from Github type the following in a Linux terminal:
-
-    git clone https://github.com/Hvass-Labs/swarmops.git
-
-This creates a directory named swarmops which contains all the source-code.
-
-Importing in Your Project
-----------------------
-
-There are different ways of importing and using swarmops in your own project.
-
-Assume you have installed swarmops in the directory ~/dev/swarmops/
-and you want to use it in a project located in ~/dev/my-project/
-
-### Symbolic Link
-
-A simple way of including swarmops in your project is to create
-a symbolic link by typing the following in a Linux terminal:
-
-    ln -s ~/dev/swarmops/swarmops/ ~/dev/my-project/swarmops/
-
-This creates ~/dev/my-project/swarmops/ which really points
-to the directory ~/dev/swarmops/swarmops/ and allows you to
-import swarmops from Python files inside ~/dev/my-project/ 
-
-### Environment Path
-
-A simple way of making swarmops available to Python in general,
-is to add the directory to the PYTHONPATH environment variable,
-by typing the following in a Linux terminal:
-
-    export PYTHONPATH=~/dev/swarmops/:$PYTHONPATH
-
-This allows you to import swarmops from any Python source-code.
-The line can be added to ~/.bashrc so it works permanently.
-
-### virtualenv
-
-If you want to use a virtual environment, you write the following
-in a Linux terminal:
+The easiest way to install SwarmOps and use it in your own project, is to
+use a virtual environment. You write the following in a Linux terminal:
 
     mkdir ~/dev/my-project/
     cd ~/dev/my-project/
     virtualenv swarmops-env
     source activate swarmops-env/
-    pip install git+https://github.com/Hvass-Labs/swarmops.git
+    pip install swarmops
 
-This allows you to use swarmops from Python files inside
-the directory ~/dev/my-project/
+You can also use Anaconda instead of a virtualenv:
+
+    conda create --name swarmops-env python=3
+    source activate swarmops-env
+    pip install swarmops
+
+If the last command fails then you can try the following instead:
+
+    pip install git+https://github.com/Hvass-Labs/swarmops.git
 
 When you are done working on the project you can deactivate the virtualenv:
 
     source deactivate
 
-Note that this will also install and build the dependencies
-NumPy, SciPy and matplotlib. This may be very slow and may
-also require you to install other libraries first. This
-installation procedure may require some experience and
-beginners may wish to use one of the simpler installations above.
-
 ### Importing
 
-Whichever of the above methods you used, you can now import swarmops
-from inside the my-project directory.
+You can now import SwarmOps when the `swarmops-env` virtual environment is active.
 
-For example, you can make a file called ~/dev/my-project/test.py
+For example, you can make a file called `~/dev/my-project/test.py`
 with the following content:
 
     from swarmops.DE import DE
@@ -145,15 +88,28 @@ different because they are random):
     [ 1.00000295  1.00000462  1.00000635]
     1.02338996528e-09
 
+### Source-Code
+
+If you want to modify the source-code or use the provided demo scripts, then you can 
+[download](https://github.com/Hvass-Labs/swarmops/archive/master.zip)
+it from GitHub as a Zip-file and unpack it into a directory of your choice.
+
+Or you can download it using git by typing the following in a Linux terminal:
+
+    git clone https://github.com/Hvass-Labs/swarmops.git
+
+This creates a directory named `swarmops` which contains all the source-code.
+
 Requirements
 ------------
 
 SwarmOps requires NumPy. Additionally, if you want to use L-BFGS-B to refine
 the best-found solution, then you also need SciPy. And if you want to plot
-the fitness-trace, then you also need matplotlib.
+the fitness-trace, then you also need matplotlib. These are installed
+automatically when using `pip install` described above.
 
 SwarmOps was developed using
-[Anaconda 3.X](https://www.continuum.io/downloads) but it should also
+[Anaconda](https://www.continuum.io/downloads) but it should also
 work with other Python installations as long as you have at least NumPy
 installed, and SciPy and matplotlib if you require them.
 
@@ -163,12 +119,12 @@ so you must use Python 3.X if you want to use parallel execution in SwarmOps.
 Optimization Demo
 -----------------
 
-A short demo for optimizing benchmark problems is found in demo-optimize.py
+A short demo for optimizing benchmark problems is found in `demo-optimize.py`
 The easiest way to learn how to use SwarmOps for optimizing a problem is to
 study and modify this file. The source-code is generally well-documented.
 
 To execute the file, type the following in a Linux terminal in the directory
-where you installed swarmops:
+where you installed the swarmops source-code from GitHub:
 
     python demo-optimize.py
 
@@ -178,7 +134,7 @@ Meta-Optimization Demo
 Meta-optimization is the tuning of an optimizer's control / behavioural
 parameters by using another overlaying optimizer. This may greatly
 improve optimization performance. SwarmOps supports meta-optimization
-and a short demo is found in the file demo-meta-optimize.py
+and a short demo is found in the file `demo-meta-optimize.py`
 
 To execute the file, type the following in a Linux terminal in the directory
 where you installed swarmops:
@@ -199,18 +155,18 @@ search-space. The fitness function is sometimes called a cost or error function.
 You can implement your own optimization problem in two ways. Either you sub-class
 the Problem-class and override the fitness() function in that class, or you pass
 your fitness-function to the init-method of the Problem-class. This is described
-in more detail in the file Problem.py and an example is given in demo-optimize.py
+in more detail in the file `Problem.py` and an example is given in `demo-optimize.py`
 
 Unit Tests
 ----------
 
-Unit-tests / nose-tests are found in the file test_all.py which test the optimizers
+Unit-tests / nose-tests are found in the file `test_all.py` which test the optimizers
 with thousands of different configurations. The purpose is to test whether
 exceptions are raised somewhere and if the output is of the expected data-type.
 The optimization results are not tested for correctness because these
 optimizers are stochastic in nature and will always give different results.
-This is discussed in more detail in the test_all.py file. This means you should
-also manually inspect the output of demo-optimize.py and demo-meta-optimize.py
+This is discussed in more detail in the `test_all.py` file. This means you should
+also manually inspect the output of `demo-optimize.py` and `demo-meta-optimize.py`
 so as to assess whether the optimization results are satisfactory.
 
 Parallel Execution
@@ -249,7 +205,7 @@ will get parallel execution (assuming your CPU has multiple cores) and you will
 still get the list of the best-found control parameters and solutions to the problems.
 
 This design choice was made because Python's parallel implementation is a bit peculiar
-and it would have required significant changes to MetaOptimize.py to make it work,
+and it would have required significant changes to `MetaOptimize.py` to make it work,
 which would have made the source-code much more complicated, while the work-around is
 quite simple.
 

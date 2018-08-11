@@ -2,3 +2,7 @@ ToDo
 __pycache__
 *.pyc
 .idea
+dist/
+swarmops.egg-info/
+.cache/
+build/
