@@ -239,7 +239,7 @@ C#, C, Java, and Matlab. Especially the C# and Java versions have more
 features than the Python version and will execute much faster for
 meta-optimization.
 
-[www.hvass-labs.org/projects/swarmops](http://www.hvass-labs.org/projects/swarmops/)
+https://github.com/Hvass-Labs/swarmops-other
 
 License
 -------
